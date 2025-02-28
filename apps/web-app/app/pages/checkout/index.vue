@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!checkout.isEmpty && !channel.isOnMaintenance">
+  <template v-if="!checkout.isEmpty && !channel.isOnMaintenance">
     <h1 class="pt-8 mb-4 md:mb-8 text-3xl md:text-4xl font-medium">
       {{ $t('app.checkout.title') }}
     </h1>
@@ -217,24 +217,28 @@
         </div>
       </div>
     </div>
-  </div>
+  </template>
 
-  <div v-else class="text-center pt-16 pb-32">
-    <h1 class="pt-8 mb-4 md:mb-8 text-3xl md:text-4xl font-medium text-center">
-      {{ $t('app.cart.empty-label') }}
-    </h1>
+  <template v-else>
+    <div class="text-center pt-16 pb-32">
+      <h1 class="pt-8 mb-4 md:mb-8 text-3xl md:text-4xl font-medium text-center">
+        {{ $t('app.cart.empty-label') }}
+      </h1>
 
-    <UButton
-      to="/"
-      size="xl"
-      variant="gradient"
-    >
-      {{ $t('common.to-home') }}
-    </UButton>
-  </div>
+      <UButton
+        to="/"
+        size="xl"
+        variant="gradient"
+      >
+        {{ $t('common.to-home') }}
+      </UButton>
+    </div>
+  </template>
 </template>
 
 <script setup lang="ts">
+import type { CheckoutDraft } from '@next-orders/core/shared/services/checkout'
+
 definePageMeta({
   layout: 'checkout',
 })
@@ -271,7 +275,7 @@ watch(
     if (!remainingCheckout.value.phone) {
       return
     }
-    if (remainingCheckout.value.phone.length > 17) {
+    if (remainingCheckout.value.phone?.length > 17) {
       return
     }
 
@@ -300,10 +304,10 @@ async function updateCheckout() {
     entrance: remainingCheckout.value.entrance,
     floor: remainingCheckout.value.floor,
     addressNote: remainingCheckout.value.addressNote,
-    paymentMethodId: remainingCheckout.value.paymentMethodId,
-    time: remainingCheckout.value.time,
-    change: remainingCheckout.value.change ? remainingCheckout.value.change.toString() : undefined,
     note: remainingCheckout.value.note,
+    time: remainingCheckout.value.time,
+    paymentMethodId: remainingCheckout.value.paymentMethodId,
+    change: selectedPaymentMethod.value?.type === 'CASH' ? remainingCheckout.value.change : undefined,
   })
 
   await navigateTo(`/finish?id=${finishedCheckout?.result?.id}`)

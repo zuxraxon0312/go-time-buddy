@@ -1,19 +1,15 @@
-import { repository } from '@next-orders/database'
+import { createId } from '@paralleldrive/cuid2'
 import { hash } from 'bcrypt'
+import { setChannelAsUpdated } from '../../../server/services/db/channel'
+import { createUser, createUserCredentials, getMaster } from '../../../server/services/db/user'
 import { userCreateSchema } from './../../../shared/services/user'
 
 export default defineEventHandler(async (event) => {
   try {
     const { channelId } = useRuntimeConfig()
-    if (!channelId) {
-      throw createError({
-        statusCode: 400,
-        statusMessage: 'Missing channelId',
-      })
-    }
 
     // Guard: If user already exists
-    const master = await repository.user.findMaster(channelId)
+    const master = await getMaster()
     if (master) {
       throw createError({
         statusCode: 400,
@@ -24,10 +20,16 @@ export default defineEventHandler(async (event) => {
     const body = await readBody(event)
     const data = userCreateSchema.parse(body)
 
-    const user = await repository.user.create({
-      channelId,
+    const user = await createUser({
+      id: createId(),
+      name: data.name ?? null,
+      email: null,
       isStaff: true,
-      name: data.name,
+      isActive: true,
+      isConfirmed: false,
+      permissions: [
+        'MASTER',
+      ],
     })
     if (!user) {
       throw createError({
@@ -36,18 +38,16 @@ export default defineEventHandler(async (event) => {
       })
     }
 
-    const passwordHash = await hash(data.password, 10)
+    const password = await hash(data.password, 10)
 
-    await repository.userCredential.create({
+    await createUserCredentials({
+      id: createId(),
+      userId: user.id,
       login: data.login,
-      passwordHash,
-      userId: user.id,
+      password,
     })
 
-    await repository.userPermission.create({
-      code: 'MASTER',
-      userId: user.id,
-    })
+    await setChannelAsUpdated(channelId)
 
     return { ok: true }
   } catch (error) {

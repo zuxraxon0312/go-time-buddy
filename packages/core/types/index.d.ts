@@ -1,8 +1,8 @@
 declare global {
   interface Channel {
     id: string
-    createdAt: Date
-    updatedAt: Date
+    createdAt: string
+    updatedAt: string
     slug: string
     name: string
     description: string | null
@@ -30,29 +30,35 @@ declare global {
     createdAt: string
     updatedAt: string
     name: string
-    channelId: string
     type: PaymentMethodType
   }
 
   type PaymentMethodType = 'CASH' | 'CARD' | 'CUSTOM'
 
   interface WorkingDay {
-    id: string
-    createdAt: string
-    updatedAt: string
-    day: 'MONDAY' | 'TUESDAY' | 'WEDNESDAY' | 'THURSDAY' | 'FRIDAY' | 'SATURDAY' | 'SUNDAY'
-    openHours: number
-    openMinutes: number
-    closeHours: number
-    closeMinutes: number
+    index: 0 | 1 | 2 | 3 | 4 | 5 | 6
+    day: DayCode
+    open: string
+    close: string
     isActive: boolean
-    channelId: string
   }
+
+  type DayCode = 'SUNDAY' | 'MONDAY' | 'TUESDAY' | 'WEDNESDAY' | 'THURSDAY' | 'FRIDAY' | 'SATURDAY'
+
+  type WorkingWeek = [
+    WorkingDay,
+    WorkingDay,
+    WorkingDay,
+    WorkingDay,
+    WorkingDay,
+    WorkingDay,
+    WorkingDay,
+  ]
 
   interface Media {
     id: string
-    createdAt: Date
-    updatedAt: Date
+    createdAt: string
+    updatedAt: string
   }
 
   interface Menu {
@@ -62,7 +68,6 @@ declare global {
     slug: string
     name: string
     isActive: boolean
-    channelId: string
     categories: MenuCategory[]
   }
 
@@ -72,19 +77,9 @@ declare global {
     updatedAt: string
     slug: string
     name: string
+    products: { id: string }[]
     menuId: string
   }
-
-  type MenuCategoryIcon =
-    | 'DEFAULT'
-    | 'BURGER'
-    | 'PIZZA'
-    | 'ROLLS'
-    | 'SUSHI'
-    | 'WOK'
-    | 'CAKE'
-    | 'LASAGNA'
-    | 'DRINK'
 
   interface Product {
     id: string
@@ -93,17 +88,15 @@ declare global {
     slug: string
     name: string
     description: string
-    channelId: string
     isAvailableForPurchase: boolean
-    categoryId: string
     mediaId: string | null
     variants: ProductVariant[]
   }
 
   interface ProductVariant {
     id: string
-    createdAt: Date
-    updatedAt: Date
+    createdAt: string
+    updatedAt: string
     productId: string
     name: string
     weightUnit: WeightUnit
@@ -121,9 +114,9 @@ declare global {
 
   interface Checkout {
     id: string
-    createdAt: Date
-    updatedAt: Date
-    status: 'CREATED' | 'FINISHED' | 'CANCELED'
+    createdAt: string
+    updatedAt: string
+    status: CheckoutStatus
     name: string
     phone: string
     deliveryMethod: CheckoutDeliveryMethod
@@ -132,7 +125,8 @@ declare global {
     totalPrice: number
     discount: number | null
     note: string | null
-    time: number
+    time: string
+    timeType: 'ASAP' | 'SCHEDULED'
     change: string | null
     warehouseId: string | null
     street: string
@@ -142,22 +136,11 @@ declare global {
     floor: string | null
     addressNote: string | null
     channelId: string
+    lines: CheckoutLine[]
   }
 
+  type CheckoutStatus = 'CREATED' | 'FINISHED' | 'CANCELED'
   type CheckoutDeliveryMethod = 'DELIVERY' | 'WAREHOUSE'
-
-  interface CheckoutDraft extends Pick<Checkout, 'name' | 'phone' | 'paymentMethodId' | 'note' | 'time' | 'change' | 'warehouseId' | 'street' | 'flat' | 'doorphone' | 'entrance' | 'floor'> {
-    time: number
-    note: string | undefined
-    change: number
-    warehouseId: string | undefined
-    street: string | undefined
-    flat: string | undefined
-    doorphone: string | undefined
-    entrance: string | undefined
-    floor: string | undefined
-    addressNote: string | undefined
-  }
 
   interface CheckoutLine {
     id: string
@@ -177,7 +160,6 @@ declare global {
     id: string
     createdAt: string
     updatedAt: string
-    channelId: string
   } & CheckoutReceiverTypes
 
   type CheckoutReceiverTypes = CheckoutReceiverTypeEmail | CheckoutReceiverTypeHttp
@@ -202,34 +184,34 @@ declare global {
     }
   }
 
+  interface CheckoutRegistryItem {
+    id: string
+    createdAt: string
+    updatedAt: string
+    checkoutId: string
+    status: CheckoutStatus
+  }
+
   interface User {
     id: string
-    createdAt: Date
-    updatedAt: Date
+    createdAt: string
+    updatedAt: string
     name: string | null
     email: string | null
     isActive: boolean
     isConfirmed: boolean
     isStaff: boolean
-    channelId: string
-  }
-
-  interface UserPermission {
-    id: string
-    createdAt: Date
-    updatedAt: Date
-    code: PermissionCode
-    userId: string
+    permissions: PermissionCode[]
   }
 
   type PermissionCode = 'MASTER' | 'MANAGE_OPTIONS' | 'MANAGE_MENUS' | 'MANAGE_PRODUCTS' | 'MANAGE_CHECKOUTS' | 'MANAGE_CLIENTS' | 'MANAGE_WAREHOUSES'
 
   interface UserCredentials {
     id: string
-    createdAt: Date
-    updatedAt: Date
+    createdAt: string
+    updatedAt: string
     login: string
-    passwordHash: string
+    password: string
     userId: string
   }
 
@@ -238,7 +220,6 @@ declare global {
     createdAt: string
     updatedAt: string
     name: string
-    channelId: string
     address: string
   }
 }

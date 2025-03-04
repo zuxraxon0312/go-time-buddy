@@ -1,12 +1,3 @@
-export function formatNumberToLocal(value?: number): string {
-  if (!value) {
-    return ''
-  }
-
-  const { locale } = useI18n()
-  return new Intl.NumberFormat(locale.value).format(value)
-}
-
 export const CURRENCY_SIGNS: Record<CurrencyCode, string> = {
   RUB: '₽',
   USD: '$',
@@ -17,6 +8,15 @@ export const CURRENCY_SIGNS: Record<CurrencyCode, string> = {
   KZT: '₸',
   PLN: 'zł',
   TRY: '₺',
+}
+
+export function getLocaleValue(data: { values?: LocaleValue[], locale: Locale, defaultLocale?: Locale }): string {
+  if (!data.values || !Array.isArray(data.values)) {
+    return ''
+  }
+
+  const hasCurrentLocale = data.values.some((n) => n.locale === data.locale)
+  return data.values.find((v) => hasCurrentLocale ? v.locale === data.locale : v.locale === data.defaultLocale)?.value ?? ''
 }
 
 export function getWeightLocalizedUnit<WeightUnitLiteral = string & object>(unit?: WeightUnit | WeightUnitLiteral): string {
@@ -70,6 +70,13 @@ export function getLocalizedPaymentMethodTypesForSelect(): { value: PaymentMetho
     { value: 'CASH', label: t('common.payment-type.cash') },
     { value: 'CARD', label: t('common.payment-type.card') },
     { value: 'CUSTOM', label: t('common.payment-type.custom') },
+  ]
+}
+
+export function getLocalizedLanguageCodesForSelect(): { value: string, label: string }[] {
+  return [
+    { value: 'en', label: 'EN - English' },
+    { value: 'ru', label: 'RU - Русский' },
   ]
 }
 

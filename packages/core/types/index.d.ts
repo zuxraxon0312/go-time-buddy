@@ -4,9 +4,9 @@ declare global {
     createdAt: string
     updatedAt: string
     slug: string
-    name: string
-    description: string | null
-    conditions: string | null
+    name: LocaleValue[]
+    description: LocaleValue[]
+    conditions: LocaleValue[]
     phone: string | null
     currencyCode: CurrencyCode
     countryCode: CountryCode
@@ -35,7 +35,7 @@ declare global {
     id: string
     createdAt: string
     updatedAt: string
-    name: string
+    name: LocaleValue[]
     type: PaymentMethodType
   }
 
@@ -105,7 +105,7 @@ declare global {
     createdAt: string
     updatedAt: string
     productId: string
-    name: string
+    name: LocaleValue[]
     weightUnit: WeightUnit
     weightValue: number
     gross: number

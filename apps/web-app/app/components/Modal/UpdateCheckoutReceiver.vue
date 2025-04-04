@@ -1,12 +1,18 @@
 <template>
-  <UModal :title="$t('center.create.menu')">
+  <UModal :title="$t('center.update.checkout-receiver')">
     <template #body>
-      <FormCreateMenu @submitted="closeAll" @success="closeAll" />
+      <FormUpdateCheckoutReceiver
+        :id="id"
+        @submitted="closeAll"
+        @success="closeAll"
+      />
     </template>
   </UModal>
 </template>
 
 <script setup lang="ts">
+defineProps<{ id: string }>()
+
 const overlay = useOverlay()
 
 function closeAll() {

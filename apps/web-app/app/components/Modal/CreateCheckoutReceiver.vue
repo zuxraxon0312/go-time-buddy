@@ -1,7 +1,7 @@
 <template>
-  <UModal :title="$t('center.create.menu')">
+  <UModal :title="$t('center.create.checkout-receiver')">
     <template #body>
-      <FormCreateMenu @submitted="closeAll" @success="closeAll" />
+      <FormCreateCheckoutReceiver @submitted="closeAll" @success="closeAll" />
     </template>
   </UModal>
 </template>

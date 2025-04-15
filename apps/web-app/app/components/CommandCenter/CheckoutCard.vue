@@ -3,7 +3,7 @@
     <div>
       <div class="mb-2 flex flex-row gap-3 items-center">
         <img
-          :src="`/api/avatar/${checkout?.phone}.svg`"
+          :src="randomAvatar"
           width="40"
           height="40"
           alt=""
@@ -77,6 +77,8 @@
 </template>
 
 <script setup lang="ts">
+import { getRandInteger } from '@nextorders/core/shared/random'
+
 const { id } = defineProps<{
   id: string
 }>()
@@ -88,4 +90,6 @@ const checkout = computed(() => checkouts.value?.find((c) => c.id === id))
 const warehouse = computed(() => channel.warehouses.find((w) => w.id === checkout.value?.warehouseId))
 
 const paymentMethod = computed(() => getLocaleValue({ values: channel.paymentMethods.find((p) => p.id === checkout.value?.paymentMethodId)?.name, locale: locale.value, defaultLocale: channel.defaultLocale }))
+
+const randomAvatar = computed(() => `/img/avatar/${getRandInteger(1, 10)}.svg`)
 </script>

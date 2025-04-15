@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { getRandInteger } from '../server/utils/avatar'
+import { getRandInteger } from '../random'
 
 describe('getRandInteger', () => {
   it('should work', () => {

@@ -1,11 +1,15 @@
-import { productVariantCreateSchema } from '@nextorders/schema'
+import { ProductVariantCreateSchema } from '@nextorders/schema'
 import { createId } from '@paralleldrive/cuid2'
+import { type } from 'arktype'
 import { repository } from '~~/server/services/db/repository'
 
 export default defineEventHandler(async (event) => {
   try {
     const body = await readBody(event)
-    const data = productVariantCreateSchema.parse(body)
+    const data = ProductVariantCreateSchema(body)
+    if (data instanceof type.errors) {
+      throw data
+    }
 
     const variant = await repository.product.createVariant({
       ...data,

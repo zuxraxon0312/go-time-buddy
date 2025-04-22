@@ -1,4 +1,5 @@
-import { productUpdateSchema, updateLocaleValues } from '@nextorders/schema'
+import { ProductUpdateSchema, updateLocaleValues } from '@nextorders/schema'
+import { type } from 'arktype'
 import { repository } from '~~/server/services/db/repository'
 
 export default defineEventHandler(async (event) => {
@@ -20,7 +21,10 @@ export default defineEventHandler(async (event) => {
     }
 
     const body = await readBody(event)
-    const data = productUpdateSchema.parse(body)
+    const data = ProductUpdateSchema(body)
+    if (data instanceof type.errors) {
+      throw data
+    }
 
     const updatedName = data.name ? updateLocaleValues(product.name, { locale: data.locale, value: data.name }) : product.name
     const updatedDescription = data.description ? updateLocaleValues(product.description, { locale: data.locale, value: data.description }) : product.description

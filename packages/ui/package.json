@@ -12,6 +12,7 @@
     "@nuxtjs/i18n": "catalog:",
     "@vueuse/core": "catalog:",
     "@vueuse/nuxt": "catalog:",
+    "arktype": "catalog:",
     "nuxt-zod-i18n": "catalog:",
     "zod": "catalog:"
   },

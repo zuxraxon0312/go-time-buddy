@@ -1,13 +1,13 @@
+import { type } from 'arktype'
 import { H3Error } from 'h3'
-import { ZodError } from 'zod'
 
 const logger = useLogger('error')
 
 export function errorResolver(exception: unknown) {
-  if (exception instanceof ZodError) {
+  if (exception instanceof type.errors) {
     throw createError({
       statusCode: 400,
-      statusMessage: 'Invalid data',
+      statusMessage: exception.summary,
     })
   }
 

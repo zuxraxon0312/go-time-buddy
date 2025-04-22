@@ -1,7 +1,4 @@
 import type { LocaleValue } from '../types/food'
-import { z } from 'zod'
-
-export const locale = z.enum(['en', 'ru'])
 
 /**
  * Update locale values array

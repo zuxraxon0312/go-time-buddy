@@ -22,8 +22,7 @@
     "postinstall": "pnpm build"
   },
   "dependencies": {
-    "@paralleldrive/cuid2": "catalog:",
-    "zod": "catalog:"
+    "arktype": "catalog:"
   },
   "devDependencies": {
     "@types/node": "catalog:",

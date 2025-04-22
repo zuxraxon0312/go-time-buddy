@@ -1,8 +1,13 @@
-export type Locale = 'ru' | 'en'
+import { type } from 'arktype'
 
-export type LocaleValue = {
-  locale: Locale
-  value: string
-}
+export const LocaleSchema = type('"en" | "ru"')
+export type Locale = typeof LocaleSchema.infer
 
-export type WeightUnit = 'G' | 'KG' | 'ML' | 'L' | 'OZ' | 'LB'
+export const LocaleValueSchema = type({
+  locale: LocaleSchema,
+  value: 'string',
+})
+export type LocaleValue = typeof LocaleValueSchema.infer
+
+export const WeightUnitSchema = type('"G" | "KG" | "ML" | "L" | "OZ" | "LB"')
+export type WeightUnit = typeof WeightUnitSchema.infer

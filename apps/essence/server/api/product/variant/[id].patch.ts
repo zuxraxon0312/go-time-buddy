@@ -1,4 +1,5 @@
-import { productVariantUpdateSchema, updateLocaleValues } from '@nextorders/schema'
+import { ProductVariantUpdateSchema, updateLocaleValues } from '@nextorders/schema'
+import { type } from 'arktype'
 import { repository } from '~~/server/services/db/repository'
 
 export default defineEventHandler(async (event) => {
@@ -12,7 +13,10 @@ export default defineEventHandler(async (event) => {
     }
 
     const body = await readBody(event)
-    const data = productVariantUpdateSchema.parse(body)
+    const data = ProductVariantUpdateSchema(body)
+    if (data instanceof type.errors) {
+      throw data
+    }
 
     const variant = await repository.product.findVariant(id)
     if (!variant) {

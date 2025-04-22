@@ -1,57 +1,50 @@
-import { z } from 'zod'
-import { locale } from './locale'
+import { type } from 'arktype'
+import { LocaleSchema, WeightUnitSchema } from '../types/food'
 
-const weightUnits = ['G', 'KG', 'ML', 'L', 'LB', 'OZ'] as const
-const weightUnit = z.enum(weightUnits)
-
-export const productCreateSchema = z.object({
-  locale,
-  name: z.string().min(2).max(75),
-  description: z.string().min(0).max(1000).optional().default(''),
-  slug: z.string().min(2).max(50).optional(),
+export const ProductCreateSchema = type({
+  locale: LocaleSchema,
+  name: '2 <= string <= 75',
+  description: '0 <= string <= 1000?',
+  slug: '2 <= string <= 50?',
 })
+export type ProductCreate = typeof ProductCreateSchema.infer
 
-export type ProductCreateSchema = z.output<typeof productCreateSchema>
-
-export const productUpdateSchema = z.object({
-  locale,
-  name: z.string().min(2).max(75).optional(),
-  description: z.string().min(0).max(1000).optional(),
-  slug: z.string().min(2).max(50).optional(),
-  isAvailableForPurchase: z.boolean().optional(),
+export const ProductUpdateSchema = type({
+  locale: LocaleSchema,
+  name: '2 <= string <= 75?',
+  description: '0 <= string <= 1000?',
+  slug: '2 <= string <= 50?',
+  isAvailableForPurchase: 'boolean?',
 })
+export type ProductUpdate = typeof ProductUpdateSchema.infer
 
-export type ProductUpdateSchema = z.output<typeof productUpdateSchema>
-
-export const productVariantCreateSchema = z.object({
-  locale,
-  productId: z.string(),
-  name: z.string().min(2).max(50),
-  weightValue: z.number(),
-  weightUnit,
-  gross: z.number(),
-  net: z.number().optional(),
-  calories: z.coerce.number().optional(),
-  protein: z.coerce.number().optional(),
-  fat: z.coerce.number().optional(),
-  carbohydrate: z.coerce.number().optional(),
-  sku: z.string().max(50).optional(),
+export const ProductVariantCreateSchema = type({
+  locale: LocaleSchema,
+  productId: 'string',
+  name: '2 <= string <= 50',
+  weightValue: 'number >= 0',
+  weightUnit: WeightUnitSchema,
+  gross: 'number >= 0',
+  net: 'number >= 0?',
+  calories: 'number >= 0?',
+  protein: 'number >= 0?',
+  fat: 'number >= 0?',
+  carbohydrate: 'number >= 0?',
+  sku: 'string <= 50?',
 })
+export type ProductVariantCreate = typeof ProductVariantCreateSchema.infer
 
-export type ProductVariantCreateSchema = z.output<typeof productVariantCreateSchema>
-
-export const productVariantUpdateSchema = z.object({
-  locale,
-  name: z.string().min(2).max(50).optional(),
-  weightValue: z.number().optional(),
-  weightUnit: weightUnit.optional(),
-  gross: z.number().optional(),
-  net: z.number().optional(),
-  calories: z.coerce.number().nullable().optional(),
-  protein: z.coerce.number().nullable().optional(),
-  fat: z.coerce.number().nullable().optional(),
-  carbohydrate: z.coerce.number().nullable().optional(),
-  sku: z.string().max(50).optional(),
+export const ProductVariantUpdateSchema = type({
+  locale: LocaleSchema,
+  name: '2 <= string <= 50?',
+  weightValue: 'number >= 0?',
+  weightUnit: WeightUnitSchema.optional(),
+  gross: 'number >= 0?',
+  net: 'number >= 0?',
+  calories: 'number >= 0?',
+  protein: 'number >= 0?',
+  fat: 'number >= 0?',
+  carbohydrate: 'number >= 0?',
+  sku: 'string <= 50?',
 })
-
-export type ProductVariantUpdateSchema = z.output<typeof productVariantUpdateSchema>
+export type ProductVariantUpdate = typeof ProductVariantUpdateSchema.infer

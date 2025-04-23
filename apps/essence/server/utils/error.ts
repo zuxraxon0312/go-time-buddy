@@ -7,7 +7,7 @@ export function errorResolver(exception: unknown) {
   if (exception instanceof type.errors) {
     throw createError({
       statusCode: 400,
-      statusMessage: exception.summary,
+      message: exception.summary,
     })
   }
 
@@ -15,11 +15,11 @@ export function errorResolver(exception: unknown) {
     throw exception
   }
 
-  // Ok, something interesting happened
+  // Ok, something happened
   logger.error(exception)
 
   return createError({
     statusCode: 500,
-    statusMessage: 'Internal server error',
+    message: 'Internal server error',
   })
 }

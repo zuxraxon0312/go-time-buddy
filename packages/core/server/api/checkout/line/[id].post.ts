@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
   if (!id || !body.method) {
     throw createError({
       statusCode: 400,
-      statusMessage: 'Missing data',
+      message: 'Missing data',
     })
   }
 
@@ -19,7 +19,7 @@ export default defineEventHandler(async (event) => {
   if (!secure?.checkoutId) {
     throw createError({
       statusCode: 404,
-      statusMessage: 'No checkout',
+      message: 'No checkout',
     })
   }
 
@@ -27,15 +27,15 @@ export default defineEventHandler(async (event) => {
   if (!checkoutInDB?.id) {
     throw createError({
       statusCode: 404,
-      statusMessage: 'No checkout',
+      message: 'No checkout',
     })
   }
 
-  const line = checkoutInDB?.lines.find((line) => line.id === id)
+  const line = checkoutInDB.items.find((line) => line.id === id)
   if (!line) {
     throw createError({
       statusCode: 404,
-      statusMessage: 'No line',
+      message: 'No line',
     })
   }
 
@@ -44,7 +44,7 @@ export default defineEventHandler(async (event) => {
     if (line.quantity >= MAX_QUANTITY_PER_LINE) {
       throw createError({
         statusCode: 400,
-        statusMessage: 'Limit reached',
+        message: 'Limit reached',
       })
     }
 

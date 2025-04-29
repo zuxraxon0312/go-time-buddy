@@ -1,6 +1,18 @@
 # Changelog
 
 
+## @nextorders/web-app-v1.0.1
+
+[compare changes](https://github.com/nextorders/food/compare/@nextorders/web-app-v1.0.0...@nextorders/web-app-v1.0.1)
+
+### 🏡 Chore
+
+- Lib updates ([#392](https://github.com/nextorders/food/pull/392))
+
+### ❤️ Contributors
+
+- Nick Kosarev <hmbanan666@hotmail.com>
+
 ## @nextorders/web-app-v1.0.0
 
 [compare changes](https://github.com/nextorders/food/compare/@nextorders/web-app-v0.0.0...@nextorders/web-app-v1.0.0)

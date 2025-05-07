@@ -1,6 +1,18 @@
 # Changelog
 
 
+## @nextorders/web-app-v1.0.2
+
+[compare changes](https://github.com/nextorders/food/compare/@nextorders/web-app-v1.0.1...@nextorders/web-app-v1.0.2)
+
+### 🏡 Chore
+
+- Lib updates and modals rework ([#399](https://github.com/nextorders/food/pull/399))
+
+### ❤️ Contributors
+
+- Nick Kosarev <hmbanan666@hotmail.com>
+
 ## @nextorders/web-app-v1.0.1
 
 [compare changes](https://github.com/nextorders/food/compare/@nextorders/web-app-v1.0.0...@nextorders/web-app-v1.0.1)
